@@ -46,18 +46,22 @@
 		var _modules = {
 			moduleone : {	// testing / site init
 				init : function() {
-					log("moduleone init");
+					// example for equalHeight()
 					_equalHeight.add( $('.height div') );
+					// example for equalWidth()
 					_equalWidth.add( $('.width div') );
+					// example for onResize
 					_onResize.add(_modules.moduletwo.orf);
+					// example for onResize with parameters
 					_onResize.add(function() {
 						_modules.moduletwo.orfwp('hui', 'bla', 'bäm');
 					},'orfwp');
+					// example for mquery-listener
 					_mquery.addListener('M',_modules.moduletwo.cbf,'enter');
-					// _modules.overlayModule.init();
 
 					this.initListeners();
 				},
+				// initalises clicklisteners
 				initListeners : function() {
 					$('#open').on('click',function(e) {
 						log("open clicked");
@@ -380,19 +384,19 @@
             			 * 
             			 * @type {Object} static pseudo class
             			 */
-            			addListener: function(querykey,callback,type) {
-            			 	if(!type) {
-            			 		type = 'enter';
-            			 	}
-            			 	var instance = this.getMQL(querykey);
-            			 	instance.addListener(function() {
-	                            if ((type === 'enter' && instance.matches) ||
-	                                (type === 'leave' && !instance.matches) ||
-	                                type === 'both') {
-	                                callback.call();
-	                            }
-	                        });
-            			},
+						addListener: function(querykey,callback,type) {
+							if(!type) {
+								type = 'enter';
+							}
+							var instance = this.getMQL(querykey);
+							instance.addListener(function() {
+								if ((type === 'enter' && instance.matches) ||
+									(type === 'leave' && !instance.matches) ||
+									type === 'both') {
+									callback.call();
+								}
+							});
+						},
             			/**
             			 * check(querykey) - gives back true or false
             			 *
@@ -568,7 +572,7 @@
 							this.active = undefined;
 							return true;
 						} else {
-							console.log("error"); // todo error handling
+							log("error"); // todo error handling
 						}
 						return false;
 					},
