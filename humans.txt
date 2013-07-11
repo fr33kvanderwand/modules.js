@@ -1,0 +1,15 @@
+/* TEAM */
+
+front-end developer: freek van der wand
+site: https://plus.google.com/116134597880808610611/
+google plus: freek van der wand
+
+/* THANKS */
+
+Name: zoidberg
+
+/* SITE */
+
+Standards: HTML5, CSS3
+Components: jQuery
+Software: Sublime Text 2, xampp

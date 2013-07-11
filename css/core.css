@@ -1,0 +1,32 @@
+* {
+	font-size: 16px;
+}
+.example div {
+	border: 1px solid #c4c4c4;
+}
+.example.onresize {
+	border: 1px solid #c4c4c4;
+	margin: 10px 0;
+}
+.example p {
+	margin: 0;
+	clear: both;
+}
+.example .overlay {
+	width: 100px;
+	height: 100px;
+	background-color: #c400c4;
+	display: none;
+}
+.example .overlay.open {
+	display: block;
+}
+.example .button {
+	min-width: 100px;
+	height: 25px;
+	margin: 10px;
+	padding: 0 5px;
+	background-color: #c4c4c4;
+	float: left;
+	text-align: center;
+}

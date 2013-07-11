@@ -1,0 +1,6 @@
+# robots.txt for modules.js
+
+user-agent: *
+disallow: /js/
+disallow: /css/
+disallow: /img/
