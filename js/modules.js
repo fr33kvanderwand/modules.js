@@ -183,12 +183,11 @@
 					// other methodes/modules
 					_modules.moduleone.init();
 					_modules.overlayModule.init();
-					// _modules.moduletwo.init();
 				});
 
 				if( DEBUG ) {	// expose to newProjekt scope
 					self.modules = _modules;
-					self.onReszie = _onResize
+					self.onResize = _onResize;
 					self.mquery = _mquery;
 					self.overlayHandler = _overlayHandler;
 				}
@@ -202,8 +201,10 @@
 			 *	triggers only if the window isn't resized for X miliseconds (default = 500ms)
 			 *	
 			 * functions:
+			 *	init: initalizes onResize
 			 *	add: adds functions to trigger
 			 *	setTimeoutMs: change timeout
+			 *	remove: removes a funciton
 			 *	
 			 * @type {Object} static pseudo class
 			 */
@@ -211,6 +212,14 @@
                 fnArr: [],
                 t: undefined,
                 tms: 500,	// default timeout in MS
+                /**
+                 * init() - initalizes the onResize module
+                 *
+                 * info:
+                 *	sets resize-handler with timeout
+                 *
+                 * @type {Object} static pseudo class
+                 */
                 init: function() {
                     var self = this;
                     $(window).on('resize', function() {
@@ -222,33 +231,48 @@
                         }, self.tms);
                     });
                 },
-                /* add(fn) - adds a function
+                /**
+                 * add(fn) - adds a function
                  *
 				 * info:
 				 *	adds a function that will be triggered on each resize
 				 *
 				 * usage:
-				 *	_onResize.add(fn[arg1,arg2,...,argN]);
+				 *	_onResize.add(fn[name,arg1,arg2,...,argN]);
+				 *	_onResize.remove(name)
 				 *
 				 * param:
 				 *	{function} fn - a function that will be triggered
+				 *	{string} name - a unique name (only needed if you want to remove)
+				 *
+				 * return:
+				 *	true / false
 				 *
 				 * @type {Object} static pseudo class
 				 */
                 add: function(fn, name) {
                     if (!fn || typeof fn !== 'function') {
-                        return 0;
+                        return false;
                     }
                     var args = Array.prototype.slice.call(arguments, 1);
                     this.fnArr.push([fn, name, args]);
-                    return 1;
+                    return true;
                 },
+                /**
+                 * loop() - calls all funcitons
+                 *
+                 * info:
+                 *	loops through the 'trigger-on-resize-functions'-array and triggers the functions
+                 *
+                 * @type {Object} static pseudo class
+                 */
                 loop: function() {
                     $.each(this.fnArr, function(index, fnWithArgs) {
                         fnWithArgs[0].apply(undefined, fnWithArgs[2]);
                     });
                 },
-                /* setTimeoutMs(ms) - change timeout
+                /**
+                 * setTimeoutMs(ms) - change timeout
                  *
 				 * info:
 				 *	changes the timeout till the functions get triggered
@@ -257,15 +281,37 @@
 				 *	_onResize.setTimeoutMs(ms);
 				 *
 				 * param:
-				 *	{ms} fn - time in Milliseconds
+				 *	{int} ms - time in Milliseconds
+				 *
+				 * return:
+				 *	true / false
 				 *
 				 * @type {Object} static pseudo class
 				 */
                 setTimeoutMs: function(ms) {
                     if (parseInt(ms, 10)) {
                         this.tms = ms;
+                        return true;
                     }
+                    return false;
                 },
+                /**
+                 * remove(name) - removes a function
+                 *
+                 * info:
+                 *	removes a function from the 'to-trigger-at-timout'-array
+                 *
+                 * usage:
+                 *	_onResize.remove('myName');
+                 *
+                 * param:
+                 *	{string} name - the (unique) name of the function that should be removed
+                 *
+                 * return:
+                 *	true / false
+                 *
+                 * @type {Object} static pseudo class
+                 */
                 remove: function(name) {
                 	var $this = this,
                 		removeIndex = undefined;
@@ -273,7 +319,11 @@
                 		if( fnWithArgs[1] == name )
                 			removeIndex = index;
                 	});
-               		$this.fnArr.splice(removeIndex,1);
+                	if(removeIndex != undefined) {
+               			$this.fnArr.splice(removeIndex,1);
+               			return true;
+               		}
+               		return false;
                 }
             },
             /**
@@ -287,6 +337,7 @@
 			 *	addListener: adds a 'queryListener'
 			 *	check: gives back true or false depending on querykey
 			 *	getMQL:  gives back MediaQueryList-object
+			 *	get: gibes back Array with key of all matching mediaQuerys
 			 *	
 			 * @type {Object} static pseudo class
 			 */
@@ -329,13 +380,11 @@
             			 * 
             			 * @type {Object} static pseudo class
             			 */
-            			 addListener: function(querykey,callback,type) {
+            			addListener: function(querykey,callback,type) {
             			 	if(!type) {
             			 		type = 'enter';
             			 	}
-
             			 	var instance = this.getMQL(querykey);
-
             			 	instance.addListener(function() {
 	                            if ((type === 'enter' && instance.matches) ||
 	                                (type === 'leave' && !instance.matches) ||
@@ -354,11 +403,11 @@
             			 *	{string} querkey - a mediaQuery-key from var mediaQuerys
             			 *
             			 * @type {Object} static pseudo class
-            			 */		
-            			 check: function(querykey) {
+            			 */
+            			check: function(querykey) {
             			 	return this.getMQL(querykey).matches;
             			 },
-            			 /**
+            			/**
             			 * getMQL(querykey) - gives back MediaQueryList
             			 *
             			 * usage:
@@ -369,7 +418,7 @@
             			 *
             			 * @type {Object} static pseudo class
             			 */	
-            			 getMQL: function(querykey) {
+            			getMQL: function(querykey) {
             			 	if(!mm[querykey]) {
             			 		if ( !! querykey) {
             			 			mm[querykey]=matchMedia(mediaQuerys[querykey]);
@@ -379,7 +428,7 @@
             			 	}
             			 	return mm[querykey];
             			 },
-            			 /**
+            			/**
             			 * get() - gives back Array  with keys of all matching mediaQuerys
             			 *
             			 * usage:
@@ -387,7 +436,7 @@
             			 *
             			 * @type {Object} static pseudo class
             			 */	
-            			 get: function() {
+            			get: function() {
             			 	var matching = new Array();
             			 	for( var key in mediaQuerys ) {
             			 		if(this.getMQL(key).matches)
@@ -494,6 +543,10 @@
 							_overlayHandler.close(_overlayHandler.active);
 						});
 					},
+					/**
+					 * setActive - sets Ovelay active
+					 *
+					 */
 					setActive: function(module) {
 						var self = this;
 
@@ -506,6 +559,10 @@
 						}
 						return false;
 					},
+					/**
+					 * unsetActive - unset Overlay active (manually close)
+					 *
+					 */
 					unsetActive: function(module) {
 						if(this.active === module) {
 							this.active = undefined;
@@ -515,8 +572,11 @@
 						}
 						return false;
 					},
+					/**
+					 * close - calls close function of active overlay
+					 *
+					 */
 					close: function(module) {
-						log("overlayHandler close function called")
 						if(checkActive(module)) {
 							self.active.close.apply(self.active);
 							self.unsetActive();
