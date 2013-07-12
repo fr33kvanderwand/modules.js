@@ -1,3 +1,13 @@
+#ob {
+	background-color: #c4c4c4;
+	font-family: Arial;
+	padding: 3px;
+	text-align: center;
+}
+#ob a {
+	text-decoration: none;
+	font-weight: bold;
+}
 * {
 	font-size: 16px;
 }

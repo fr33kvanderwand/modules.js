@@ -213,9 +213,9 @@
 			 * @type {Object} static pseudo class
 			 */
 			_onResize = {
-                fnArr: [],
-                t: undefined,
-                tms: 500,	// default timeout in MS
+                fnArr: [],		// to-trigger-functions-array
+                t: undefined,	// timeout-object
+                tms: 500,		// default timeout in MS
                 /**
                  * init() - initalizes the onResize module
                  *
@@ -467,7 +467,7 @@
 				add: function($e,$n) {
 					$e.equalHeight();
 					_onResize.add( function() {
-						$e.css('height','auto');	// reset height
+						$e.css('height','auto');
 						$e.equalHeight();	
 					},$n );
 				},
@@ -489,7 +489,7 @@
 				add: function($e, $n) {
 					$e.equalWidth();
 					_onResize.add( function() {
-						$e.css('width','auto'); // reset width
+						$e.css('width','auto');
 						$e.equalWidth();
 					} );
 				},

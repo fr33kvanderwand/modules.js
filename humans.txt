@@ -1,6 +1,6 @@
 /* TEAM */
 
-front-end developer: freek van der wand
+developer: freek van der wand
 site: https://plus.google.com/116134597880808610611/
 google plus: freek van der wand
 
