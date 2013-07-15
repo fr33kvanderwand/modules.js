@@ -11,7 +11,7 @@
 		"use strict"
 		window.log.history = window.log.history || [];
 		window.log.history.push(arguments);
-		if(window.console){
+		if(window.console) {
 				window.console.log(Array.prototype.slice.call(arguments));
 		}
 	};
@@ -29,22 +29,21 @@
 				$t = $(this);
 			return $t.css('width','auto').each(function(ind, el) {
 				w = Math.max(w, $(el).outerWidth());
-			}).css('width', w+'px')
+			}).css('width', w+'px');
 		}
-	})
+	});
 
 	var newProjekt = newProjekt || (function() {
 		// Closure scope == fake constructor of uninstanced Object 'newProjekt'
 		// it also enebles to set private / static vars and methods
-		
 		var self = {};
 
-		// private constant
-		var DEBUG = true;
+		// private constants
+		var DEBUG = true;	
 
 		// public methodes (modules)
 		var _modules = {
-			moduleone : {	// testing / site init
+			moduleone : {	// example module / testing - site init
 				init : function() {
 					// example for equalHeight()
 					_equalHeight.add( $('.height div') );
@@ -164,16 +163,13 @@
 			})()
 		};
 
-		// private methodes
-		var _privMethod = function() {
-				log("_privMethod");
-			},
-			/**
-			 * _init() - initalizies the modules
-			 *
-			 * @type {Object} static pseudo class
-			 */
-			_init = function() {
+// PRIVATE METHODES //
+		/**
+		 * _init() - initalizies the modules
+		 *
+		 * @type {Object} static pseudo class
+		 */
+		var _init = function() {
 				log("_init");
 				$(function() {	// shorttag for $.ready()
 					// init modules
@@ -474,8 +470,8 @@
 				remove: function($e,$n) {
 					$e.css('height','auto');
 					_onResize.remove($n);
-				}
-			},
+				
+}			},
 			/**
 			 * _equalWidth() - sets equal width to jQuery-elements
 			 *
@@ -507,14 +503,16 @@
 			 *	
 			 * usage:
 			 *	on open: _overlayHandler.setActive(module);
-			 *	on clos: _overlayHandler.unsetActive(module);
+			 *	on close: _overlayHandler.unsetActive(module);
+			 *	close: _overlayHandler.close();
 			 *
 			 * functions:
 			 *	checkModule: check if it's a module with close function
 			 *	checkActive: check if module is active
+			 *	init: initalize the overlayHandler
 			 *	setActive: set as active module
-			 *	unsetActive: unset as active module
-			 *	close: triggers close event of active module
+			 *	unsetActive: unset as active module (manually close) 
+			 *	close: close active overlay
 			 *	
 			 * @type {Object} static pseudo class
 			 */
@@ -539,51 +537,82 @@
 
 				var self = {
 					active: undefined,
+					/**
+					 * init - initalize the overlayHandler
+					 *
+					 * @type {Object} static pseudo class
+					 */
 					init: function() {
 						this.active = !! this.active || undefined;
 
 						$(document).on('click','body',function(e) {
 							log("clicked on: " + e.originalEvent.target);
-							_overlayHandler.close(_overlayHandler.active);
+							_overlayHandler.close();
 						});
 					},
 					/**
 					 * setActive - sets Ovelay active
 					 *
+					 * info:
+					 *	set a Overlay as active when you open it,
+					 *	to add it to the overlayHandler
+					 *
+					 * return:
+					 *	true / false
+					 *
+					 * param:
+					 *	{Object} module - the modulte that was opened
+					 *
+					 * @type {Object} static pseudo class
 					 */
 					setActive: function(module) {
-						var self = this;
-
-						if(checkActive(module)) {
-							this.close(module);
-						}
-						if( !! module && module !== self.active ) {
+						if( checkModule(module) && module !== self.active ) {
+							self.close();
 							self.active = module;
 							return true;
+						} else {
+							return false;	// no moduel, no overlay-module or already active
 						}
-						return false;
 					},
 					/**
-					 * unsetActive - unset Overlay active (manually close)
+					 * unsetActive(module) - unset as active module (manually close) 
 					 *
+					 * info:
+					 *	call this function everytime a Overlay gets closed manually
+					 *	(not with the _overlayHandler.close(moduel) function)
+					 *
+					 * param:
+					 *	{Object} module - the module that was manually closed
+					 *
+					 * @type {Object} static pseudo class
 					 */
 					unsetActive: function(module) {
-						if(this.active === module) {
-							this.active = undefined;
+						if( checkActive(module) ) {
+							self.active = undefined;
 							return true;
 						} else {
-							log("error"); // todo error handling
+							return false;	// module is not active module
 						}
-						return false;
 					},
 					/**
-					 * close - calls close function of active overlay
+					 * close() - close active overlay
 					 *
+					 * info:
+					 *	triggers close event of active moduled
+					 *
+					 * @type {Object} static pseudo class
 					 */
-					close: function(module) {
-						if(checkActive(module)) {
-							self.active.close.apply(self.active);
-							self.unsetActive();
+					close: function() {
+						if( self.active != undefined) {
+							log(self.active);
+							if( checkModule(self.active) ) {
+								self.active.close.apply(self.active);
+								self.unsetActive();
+							} else {
+								return false;	// active element has no close-function
+							}
+						} else {
+							return false;	// no active overlay
 						}
 					}
 				};

@@ -11,6 +11,11 @@
 * {
 	font-size: 16px;
 }
+.example {
+	width: 100%;
+	display: block;
+	overflow: hidden;
+}
 .example div {
 	border: 1px solid #c4c4c4;
 }
