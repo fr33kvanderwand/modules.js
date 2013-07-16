@@ -133,6 +133,7 @@
 			overlayModule : (function() {
 				var self = {
 					init : function() {
+						/* init all click-listeners */
 						$('#o').on('click',function(e) {
 							e.preventDefault();
 							e.stopPropagation();
@@ -470,8 +471,8 @@
 				remove: function($e,$n) {
 					$e.css('height','auto');
 					_onResize.remove($n);
-				
-}			},
+				}
+			},
 			/**
 			 * _equalWidth() - sets equal width to jQuery-elements
 			 *

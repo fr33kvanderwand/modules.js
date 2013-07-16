@@ -1,3 +1,31 @@
+/* START defaults */
+* {
+	font-size: 16px;
+}
+p {
+	margin: 0;
+	clear: both;
+}
+.button {
+	min-width: 100px;
+	height: 25px;
+	margin: 10px;
+	padding: 0 5px;
+	background-color: #c4c4c4;
+	float: left;
+	text-align: center;
+}
+.example {
+	width: 100%;
+	display: block;
+	overflow: hidden;
+}
+.example div {
+	border: 1px solid #c4c4c4;
+}
+/* END defaults */
+
+/* START old browser message */
 #ob {
 	background-color: #c4c4c4;
 	font-family: Arial;
@@ -8,24 +36,11 @@
 	text-decoration: none;
 	font-weight: bold;
 }
-* {
-	font-size: 16px;
-}
-.example {
-	width: 100%;
-	display: block;
-	overflow: hidden;
-}
-.example div {
-	border: 1px solid #c4c4c4;
-}
+/* END old brwoser message */
+
 .example.onresize {
 	border: 1px solid #c4c4c4;
 	margin: 10px 0;
-}
-.example p {
-	margin: 0;
-	clear: both;
 }
 .example .overlay {
 	width: 100px;
@@ -35,13 +50,4 @@
 }
 .example .overlay.open {
 	display: block;
-}
-.example .button {
-	min-width: 100px;
-	height: 25px;
-	margin: 10px;
-	padding: 0 5px;
-	background-color: #c4c4c4;
-	float: left;
-	text-align: center;
 }
